@@ -8,4 +8,4 @@ Install dependencies
 Run this on terminal
 `uvicorn main:app --reload`
 
-Click on the `GET /recommendations/` and enter any user id, a JSON response will be shown.
+Open live server at `index.html`
