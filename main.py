@@ -2,8 +2,19 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Enable CORS
+origins = ["http://127.0.0.1:5500"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load Dataset
 df_rating = pd.read_csv('./Data/Dataset.csv')

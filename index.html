@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="number" name="userId" id="userId" placeholder="User ID" />
+  <button onclick="suggestMovies()">Suggest</button>
+  <div id="display-recommendations"></div>
+
+  <script>
+    const displayRecommendations = document.getElementById('display-recommendations');
+
+    async function getRecommendations(userId) {
+      const response = await fetch(`http://localhost:8000/recommendations/?user_id=${userId}`);
+
+      if (!response.ok) {
+        // error handling
+      }
+      const responseData = await response.json();
+      return responseData.recommendations;
+    }
+
+    async function suggestMovies() {
+      displayRecommendations.innerHTML = '';
+      
+      const userId = document.getElementById('userId').value;
+      const suggestedMovies = await getRecommendations(userId);
+
+      const orderedList = document.createElement('ol');
+      suggestedMovies.forEach(movie => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `${movie.movie_title} - ${movie.estimated_rating}`;
+        orderedList.appendChild(listItem);
+      });
+
+      displayRecommendations.appendChild(orderedList);
+    }
+  </script>
+</body>
+</html>
