@@ -48,7 +48,7 @@ def process_recommendations(user_ratings, top_n_recommendations):
     return recommendations
 
 @app.get("/recommendations/")
-def get_recommendations(user_id: int, top_n: int = 5):
+def get_recommendations(user_id: int, top_n: int=5):
     user_ratings = predicted_ratings[user_id - 1]  # Adjust for 0-based indexing
     top_n_recommendations = np.argsort(user_ratings)[::-1][:top_n]
 
