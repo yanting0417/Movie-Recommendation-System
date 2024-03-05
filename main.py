@@ -6,8 +6,8 @@ from fastapi import FastAPI
 app = FastAPI()
 
 # Load Dataset
-df_rating = pd.read_csv(r'C:\Users\User\Desktop\Movie-Recommendation-System\Data\Dataset.csv')
-df_title = pd.read_csv(r'C:\Users\User\Desktop\Movie-Recommendation-System\Data\Movie_Id_Titles.csv')
+df_rating = pd.read_csv('./Data/Dataset.csv')
+df_title = pd.read_csv('./Data/Movie_Id_Titles.csv')
 
 # Drop unnecessary columns
 df_rating.drop(columns=['timestamp'], inplace=True)
