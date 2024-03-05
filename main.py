@@ -35,11 +35,7 @@ Vt = Vt[:num_latent_factors, :]
 # Predict ratings
 predicted_ratings = np.dot(np.dot(U, sigma), Vt)
 
-@app.get("/recommendations/")
-def get_recommendations(user_id: int):
-    user_ratings = predicted_ratings[user_id - 1]  # Adjust for 0-based indexing
-    top_n_recommendations = np.argsort(user_ratings)[::-1][:10]
-
+def process_recommendations(user_ratings, top_n_recommendations):
     recommendations = []
     for idx in top_n_recommendations:
         movie_id = user_item_matrix.columns[idx]
@@ -48,5 +44,14 @@ def get_recommendations(user_id: int):
         recommendation_info = {"movie_title": movie_title, "estimated_rating": estimated_rating}
         recommendations.append(recommendation_info)
         print(f"{movie_title} (Estimated Rating: {estimated_rating:.2f})")
+    return recommendations
 
+
+@app.get("/recommendations/")
+def get_recommendations(user_id: int, top_n: int):
+    user_ratings = predicted_ratings[user_id - 1]  # Adjust for 0-based indexing
+    top_n_recommendations = np.argsort(user_ratings)[::-1][:top_n]
+
+    recommendations = process_recommendations(user_ratings, top_n_recommendations)
+    
     return {"user_id": user_id, "recommendations": recommendations}
